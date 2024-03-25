@@ -1,5 +1,5 @@
 // c++ library
-
+#define STB_IMAGE_IMPLEMENTATION
 #include <cmath>
 #include <cstring>
 #include <fstream>
@@ -14,6 +14,7 @@
 #include "Camera.hpp"
 #include "Mesh.hpp"
 #include "Shader.hpp"
+#include "Texture.hpp"
 #include "ext/vector_float3.hpp"
 #include "glm/ext/matrix_clip_space.hpp" // glm::perspective
 #include "glm/ext/matrix_transform.hpp" // glm::translate, glm::rotate, glm::scale
@@ -24,9 +25,8 @@
 #include "glm/vec3.hpp"   // glm::vec3
 #include "glm/vec4.hpp"   // glm::vec4
 #include <Window.hpp>
-#include <vector>
-
 #include <chrono>
+#include <vector>
 
 // void inline get_deltatiime() {}
 
@@ -38,7 +38,9 @@ std::vector<Mesh *> meshlist;
 std::vector<Shader *> shaderlist;
 Camera camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f,
               0.0f, 5.0f, 0.05f);
+Texture brick_texture("../texture/brick.png");
 
+Texture dirt_texture("../texture/dirt.png");
 // degree  to radians
 const float toradians = 3.14159265359 / 180.0f;
 
@@ -64,23 +66,17 @@ void createObjects() {
 
   };
 
-  GLfloat vertices[] = {
-      //       |x   | y    |z
-      -1.0f, -1.0f, 0.0f, // this is the  left most point
-                          //
-      0.0f, -1.0f, 1.0f,  // this the  inner most point
-                          //
-      1.0f, -1.0f, 0.0f,  // this is the right most point
-                          //
-      0.0f, 1.0f, 0.0f    // tis is the upper most point
-  };
+  GLfloat vertices[] = {//	x      y      z			u	  v
+                        -1.0f, -1.0f, 0.0f, 0.0f, 0.0f,  0.0f, -1.0f,
+                        1.0f,  0.5f,  0.0f, 1.0f, -1.0f, 0.0f, 1.0f,
+                        0.0f,  0.0f,  1.0f, 0.0f, 0.5f,  1.0f};
 
   Mesh *obj1 = new Mesh();
-  obj1->Create_Mesh(vertices, indices, 12, 12);
+  obj1->Create_Mesh(vertices, indices, 20, 12);
   meshlist.push_back(obj1);
 
   Mesh *obj2 = new Mesh();
-  obj2->Create_Mesh(vertices, indices, 12, 12);
+  obj2->Create_Mesh(vertices, indices, 20, 12);
   meshlist.push_back(obj2);
 }
 void CreateShader() {
@@ -116,7 +112,10 @@ int main() {
   uniformprojection = shaderlist[0]->GetProjectionLocation();
   uniformmodel = shaderlist[0]->GetModelLocation();
   uniformview = shaderlist[0]->GetViewLocation();
+  brick_texture.Load_texture();
 
+  dirt_texture.Load_texture();
+  // brick_texture.Load_texture();
   float angle = 0;
   // Loop until window closed
   while (!MAINWINDOW.Window_should_close()) {
@@ -124,6 +123,7 @@ int main() {
     now = glfwGetTime();
     deltaTime = now - lastTime;
     lastTime = now;
+    // glfwWaitEvents();
     glfwPollEvents();
     camera.keycontrol(MAINWINDOW.getkey(), deltaTime);
     camera.mousecontrol(MAINWINDOW.getXchange(), MAINWINDOW.getYchange());
@@ -143,10 +143,10 @@ int main() {
 
     (angle >= 360) ? angle = 0 : angle += 0.0001;
     model = glm::translate(model, glm::vec3(-0.70f, 0.0f, -2.5f));
-    /*   model = glm::rotate(model, angle, glm::vec3(00.0f, 0.0f, 01.0f)); */
+    model = glm::rotate(model, angle, glm::vec3(00.0f, 0.0f, 01.0f));
     model = glm::scale(model, glm::vec3(0.4f, 0.4f, 1.0f));
     glUniformMatrix4fv(uniformmodel, 1, GL_FALSE, glm::value_ptr(model));
-
+    brick_texture.Use_tetxtue();
     meshlist[0]->Render_Mesh();
     model = glm::mat4(1.0f);
 
@@ -155,7 +155,7 @@ int main() {
     model = glm::scale(model, glm::vec3(0.4f, 0.4f, 1.0f));
 
     glUniformMatrix4fv(uniformmodel, 1, GL_FALSE, glm::value_ptr(model));
-
+    dirt_texture.Use_tetxtue();
     meshlist[1]->Render_Mesh();
     glUseProgram(0);
 

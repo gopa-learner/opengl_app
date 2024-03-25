@@ -1,5 +1,5 @@
 #include "Window.hpp"
-#include "glfw3.h"
+#include "GLFW/glfw3.h"
 #include <utility>
 
 void Window::callbacks() {
@@ -22,11 +22,11 @@ void Window::handleKeys(GLFWwindow *window, int key, int code, int action,
       /*   std::cout << "ok"; */
       theWindow->keys[key] = true;
       theWindow->key_nummber = key;
-      std::cout << "pressed key" << key << "\n";
+      /*   std::cout << "pressed key" << key << "\r"; */
     } else if (action == GLFW_RELEASE) {
       theWindow->keys[key] = false;
       theWindow->key_nummber = 0;
-      std::cout << "released key " << key << "\n";
+      /*  std::cout << "released key " << key << "\r"; */
     }
   }
 }
@@ -56,8 +56,8 @@ bool Window::initialize() {
 
   // Setup GLFW window properties
   // OpenGL version
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
   // Core Profile = No Backwards Compatibility
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
   // Allow Forward Compatbility
@@ -81,7 +81,7 @@ bool Window::initialize() {
   callbacks();
 
   // SET INPUYT MODE
-  // glfwSetInputMode(MainWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+  /*   glfwSetInputMode(MainWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED); */
   // Set context for GLEW to use
   glfwMakeContextCurrent(MainWindow);
   // Allow modern extension features
@@ -114,8 +114,8 @@ void Window::handlemouse(GLFWwindow *window, double Xpos, double Ypos) {
   theWindow->ychange = Ypos - theWindow->lasty;
   theWindow->lastx = Xpos;
   theWindow->lasty = Ypos;
-  std::cout << "the position of mouse    X:" << theWindow->lastx
-            << "   Y  :" << theWindow->lasty << "\n";
+  // std::cout << "the position of mouse    X:" << theWindow->lastx
+  //           << "   Y  :" << theWindow->lasty << "\r";
 }
 GLfloat Window::getYchange() {
   GLfloat change = 0;

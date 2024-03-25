@@ -22,7 +22,9 @@ file(GLOB SOURCE_file CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp
 message("SOURCE FILES ARE" ${SOURCE_file})
 # for my owm header file
 file(GLOB HEADER_file CONFIGURE_DEPENDS
-     ${CMAKE_CURRENT_SOURCE_DIR}/header/*.hpp)
+     ${CMAKE_CURRENT_SOURCE_DIR}/header/*.hpp
+     ${CMAKE_CURRENT_SOURCE_DIR}/header/*.h)
+
 message("header FILES ARE" ${HEADER_file})
 # for all linrary
 file(GLOB library CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/lib/*.a)
@@ -35,7 +37,6 @@ target_include_directories(
   PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/header/GLFW
          ${CMAKE_CURRENT_SOURCE_DIR}/header/GL ${CMAKE_CURRENT_SOURCE_DIR}/glm
          ${CMAKE_CURRENT_SOURCE_DIR}/header)
-target_link_libraries(${PROJECT_NAME} PRIVATE ${library} glm::glm
-                                              ${OPENGL_LIBRARY})
+target_link_libraries(${PROJECT_NAME} PRIVATE ${library} glm::glm OpenGL::GLX)
 
 # add_dependencies(${PROJECT_NAME} OpenGL::OpenGL)
