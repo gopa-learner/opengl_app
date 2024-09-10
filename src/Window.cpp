@@ -34,7 +34,7 @@ void Window::handleKeys(GLFWwindow *window, int key, int code, int action,
 Window::Window(GLint WindowWidth, GLint WindowHeight) {
 
   Window_HEIGHT = WindowHeight;
-  Window_WIDTH = WindowHeight;
+  Window_WIDTH = WindowWidth;
 }
 Window::~Window() {
   glfwDestroyWindow(MainWindow);
@@ -53,7 +53,7 @@ bool Window::initialize() {
     glfwTerminate();
     return 1;
   }
-
+  glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
   // Setup GLFW window properties
   // OpenGL version
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);

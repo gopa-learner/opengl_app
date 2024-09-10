@@ -10,7 +10,7 @@ Mesh::Mesh() {
 void Mesh::Create_Mesh(GLfloat *vertices, unsigned int *indices,
                        unsigned int number_of_vertices,
                        unsigned int number_of_indices) {
-  indexcount = number_of_vertices;
+  indexcount = number_of_indices;
   // array generation
   glGenVertexArrays(1, &VAO);
   glBindVertexArray(VAO);
@@ -18,21 +18,26 @@ void Mesh::Create_Mesh(GLfloat *vertices, unsigned int *indices,
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
 
   glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices[0]) * number_of_indices,
-               indices, GL_STATIC_DRAW);
+               indices, GL_DYNAMIC_DRAW);
 
   glGenBuffers(1, &VBO);
   // binding buffer
   glBindBuffer(GL_ARRAY_BUFFER, VBO);
   glBufferData(GL_ARRAY_BUFFER, sizeof(vertices[0]) * number_of_vertices,
-               vertices, GL_STATIC_DRAW);
+               vertices, GL_DYNAMIC_DRAW);
 
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(vertices[0]) * 5, 0);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(vertices[0]) * 8, 0);
   // removing buffer
 
   glEnableVertexAttribArray(0);
-  glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(vertices[0]) * 5,
-                        (void *)(sizeof(vertices[0] * 3)));
+  glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(vertices[0]) * 8,
+                        (void *)(sizeof(vertices[0]) * 3));
   glEnableVertexAttribArray(1);
+
+  glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(vertices[0]) * 8,
+                        (void *)(sizeof(vertices[0]) * 5));
+
+  glEnableVertexAttribArray(2);
   glBindBuffer(GL_ARRAY_BUFFER, 0);
 
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);

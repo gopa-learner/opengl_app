@@ -1356,7 +1356,12 @@ static FILE *stbi__fopen(char const *filename, char const *mode)
    if (0 != fopen_s(&f, filename, mode))
       f=0;
 #else
-   f = fopen(filename, mode);
+    {
+        f = fopen(filename, mode);
+
+    if (!f)
+      printf("Error %d \n", errno);
+    }
 #endif
    return f;
 }

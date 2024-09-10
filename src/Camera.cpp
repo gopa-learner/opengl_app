@@ -1,4 +1,5 @@
 #include "Camera.hpp"
+#include "ext/vector_float3.hpp"
 #include "geometric.hpp"
 #include "glfw3.h"
 
@@ -88,3 +89,6 @@ void Camera::mousecontrol(GLfloat xchange, GLfloat ychange) {
   }
   update();
 }
+
+glm::vec3 Camera::Getcameraposition() { return position; }
+glm::vec3 Camera::Getcameradirection() { return glm::normalize(front); }

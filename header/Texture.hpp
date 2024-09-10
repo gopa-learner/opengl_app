@@ -2,6 +2,7 @@
 
 #include "GL/glew.h"
 #include "stb_image.h"
+
 #include <iostream>
 #include <string>
 class Texture {
@@ -16,7 +17,9 @@ public:
   Texture();
   ~Texture();
 
-  void Load_texture();
+  bool Load_texture();
+
+  bool Load_textureA();
   void Use_tetxtue();
   void Clear_texture();
 };
